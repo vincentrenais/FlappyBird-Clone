@@ -15,6 +15,7 @@
 		B726E0A01B0D884C00E596C6 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B726E09F1B0D884C00E596C6 /* Images.xcassets */; };
 		B726E0A31B0D884C00E596C6 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = B726E0A11B0D884C00E596C6 /* LaunchScreen.xib */; };
 		B726E0AF1B0D884C00E596C6 /* FlappyBirdSwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B726E0AE1B0D884C00E596C6 /* FlappyBirdSwiftTests.swift */; };
+		B726E0BB1B0D88F900E596C6 /* img in Resources */ = {isa = PBXBuildFile; fileRef = B726E0BA1B0D88F900E596C6 /* img */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +41,7 @@
 		B726E0A81B0D884C00E596C6 /* FlappyBirdSwiftTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FlappyBirdSwiftTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B726E0AD1B0D884C00E596C6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B726E0AE1B0D884C00E596C6 /* FlappyBirdSwiftTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlappyBirdSwiftTests.swift; sourceTree = "<group>"; };
+		B726E0BA1B0D88F900E596C6 /* img */ = {isa = PBXFileReference; lastKnownFileType = folder; path = img; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +83,7 @@
 		B726E0911B0D884C00E596C6 /* FlappyBirdSwift */ = {
 			isa = PBXGroup;
 			children = (
+				B726E0BA1B0D88F900E596C6 /* img */,
 				B726E0941B0D884C00E596C6 /* AppDelegate.swift */,
 				B726E0961B0D884C00E596C6 /* GameScene.sks */,
 				B726E0981B0D884C00E596C6 /* GameScene.swift */,
@@ -198,6 +201,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B726E0BB1B0D88F900E596C6 /* img in Resources */,
 				B726E0A31B0D884C00E596C6 /* LaunchScreen.xib in Resources */,
 				B726E0A01B0D884C00E596C6 /* Images.xcassets in Resources */,
 				B726E0971B0D884C00E596C6 /* GameScene.sks in Resources */,
