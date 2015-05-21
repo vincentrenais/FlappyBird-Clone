@@ -18,6 +18,8 @@ class GameScene: SKScene {
         
         self.addChild(movingObjects)
         
+        // BACKGROUND
+        
         var backgroundTexture = SKTexture(imageNamed: "img/bg.png")
         var moveBackground = SKAction.moveByX(-backgroundTexture.size().width, y: 0, duration: 9)
         var replaceBackground = SKAction.moveByX(backgroundTexture.size().width, y: 0, duration: 0)
@@ -30,6 +32,8 @@ class GameScene: SKScene {
             movingObjects.addChild(background)
         }
         
+        
+        // BIRD
         
         var birdTexture1 = SKTexture(imageNamed: "img/flappy1.png")
         var birdTexture2 = SKTexture(imageNamed: "img/flappy2.png")
@@ -46,6 +50,7 @@ class GameScene: SKScene {
         self.addChild(bird)
         
         
+        // GROUND
         
         var ground = SKNode()
         ground.position = CGPointMake(0,0)
@@ -58,13 +63,16 @@ class GameScene: SKScene {
     func makePipes() {
         
         let gapHeight = bird.size.height * 4.3
-        var movementAmount = arc4random() % UInt32(self.frame.size.height/2)
-        var pipeOffSet = CGFloat(movementAmount) - self.frame.size.height / 4
-        var movePipes = SKAction.moveByX(-self.frame.size.width * 2, y: 0, duration: NSTimeInterval(self.frame.size.width / 100))
-        var removePipe = SKAction.removeFromParent()
-        var moveAndRemove = SKAction.repeatActionForever(SKAction.sequence([movePipes, removePipe]))
         
-        // Pipe 1
+        var movementAmount = arc4random() % UInt32(self.frame.size.height/1.5)
+        var pipeOffSet = CGFloat(movementAmount) - self.frame.size.height / 4
+        var movePipes = SKAction.moveByX(-self.frame.size.width * 2, y: 0, duration: NSTimeInterval(self.frame.size.width / 50))
+        var removePipes = SKAction.removeFromParent()
+        var moveAndRemove = SKAction.repeatActionForever(SKAction.sequence([movePipes, removePipes]))
+        
+        
+        
+        // PIPE 1
         
         var pipeTexture1 = SKTexture(imageNamed: "img/pipe1.png")
         var pipe1 = SKSpriteNode(texture: pipeTexture1)
@@ -75,7 +83,9 @@ class GameScene: SKScene {
         pipe1.position = CGPoint(x: CGRectGetMidX(self.frame) + self.frame.size.width, y: CGRectGetMidY(self.frame) + pipe1.size.height/2 + gapHeight/2 + pipeOffSet)
         movingObjects.addChild(pipe1)
         
-        // Pipe 2
+        
+        
+        // PIPE 2
         
         var pipeTexture2 = SKTexture(imageNamed: "img/pipe2.png")
         var pipe2 = SKSpriteNode(texture: pipeTexture2)
@@ -86,6 +96,8 @@ class GameScene: SKScene {
         pipe2.position = CGPoint(x: CGRectGetMidX(self.frame) + self.frame.size.width, y: CGRectGetMidY(self.frame) - pipe2.size.height/2 - gapHeight/2 + pipeOffSet)
         movingObjects.addChild(pipe2)
         
+        
+        // GAP
         
         var gap = SKNode()
         gap.position = CGPoint(x: CGRectGetMidX(self.frame) + self.frame.size.width, y: CGRectGetMidY(self.frame) + pipeOffSet)
