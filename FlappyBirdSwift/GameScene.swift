@@ -38,6 +38,7 @@ class GameScene: SKScene {
         bird = SKSpriteNode(texture: birdTexture1)
         bird.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame))
         bird.runAction(makeBirdFlap)
+        bird.setScale(0.5)
         bird.physicsBody = SKPhysicsBody(circleOfRadius: bird.size.height/2)
         bird.physicsBody?.dynamic = true
         bird.physicsBody?.allowsRotation = false
@@ -68,6 +69,7 @@ class GameScene: SKScene {
         var pipeTexture1 = SKTexture(imageNamed: "img/pipe1.png")
         var pipe1 = SKSpriteNode(texture: pipeTexture1)
         pipe1.runAction(moveAndRemove)
+        pipe1.setScale(0.5)
         pipe1.physicsBody = SKPhysicsBody(rectangleOfSize: pipe1.size)
         pipe1.physicsBody?.dynamic = false
         pipe1.position = CGPoint(x: CGRectGetMidX(self.frame) + self.frame.size.width, y: CGRectGetMidY(self.frame) + pipe1.size.height/2 + gapHeight/2 + pipeOffSet)
@@ -78,6 +80,7 @@ class GameScene: SKScene {
         var pipeTexture2 = SKTexture(imageNamed: "img/pipe2.png")
         var pipe2 = SKSpriteNode(texture: pipeTexture2)
         pipe2.runAction(moveAndRemove)
+        pipe2.setScale(0.5)
         pipe2.physicsBody = SKPhysicsBody(rectangleOfSize: pipe2.size)
         pipe2.physicsBody?.dynamic = false
         pipe2.position = CGPoint(x: CGRectGetMidX(self.frame) + self.frame.size.width, y: CGRectGetMidY(self.frame) - pipe2.size.height/2 - gapHeight/2 + pipeOffSet)
@@ -96,7 +99,7 @@ class GameScene: SKScene {
         /* Called when a touch begins */
         
         bird.physicsBody?.velocity = CGVectorMake(0, 0)
-        bird.physicsBody?.applyImpulse(CGVectorMake(0, 50))
+        bird.physicsBody?.applyImpulse(CGVectorMake(0, 15))
         
     }
     
