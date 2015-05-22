@@ -26,8 +26,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.addChild(movingObjects)
         self.playSound("music/music.mp3", shouldRepeat: true)
         
-        // BACKGROUND
         
+        
+        // BACKGROUND
         
         var backgroundTexture = SKTexture(imageNamed: "img/Ocean2.png")
         var moveBackground = SKAction.moveByX(-backgroundTexture.size().width, y: 0, duration: 9)
@@ -137,6 +138,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         pipe2.position = CGPoint(x: CGRectGetMidX(self.frame) + self.frame.size.width, y: CGRectGetMidY(self.frame) - pipe2.size.height/2 - gapHeight/2 + pipeOffSet)
         pipe2.physicsBody?.categoryBitMask = worldGroup
         movingObjects.addChild(pipe2)
+        
         
         
         // GAP
