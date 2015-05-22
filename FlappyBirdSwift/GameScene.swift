@@ -11,11 +11,14 @@ import SpriteKit
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var score = 0
+    var bestScore = 0
     var scoreLabel = SKLabelNode()
+    var scoreboardScoreLabel = SKLabelNode()
+    var scoreboardBestScoreLabel = SKLabelNode()
     var bird = SKSpriteNode()
     var background = SKSpriteNode()
     var background1 = SKSpriteNode()
-    var movingObjects = SKNode()
+    var gameOver = SKSpriteNode()
     let birdGroup:UInt32 = 1 << 0
     let worldGroup:UInt32 = 1 << 1
     let gapGroup:UInt32 = 1 << 2
@@ -23,7 +26,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     override func didMoveToView(view: SKView) {
         
         self.physicsWorld.contactDelegate = self
-        self.addChild(movingObjects)
         self.playSound("music/music.mp3", shouldRepeat: true)
         
         
@@ -39,7 +41,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             background1.position = CGPoint(x: backgroundTexture.size().width/2 + backgroundTexture.size().width * i, y: CGRectGetMidY(self.frame))
             background1.size.height = self.frame.height
             background1.runAction(moveBackgroundForever)
-            movingObjects.addChild(background1)
+            self.addChild(background1)
         }
         
         var backgroundTexture1 = SKTexture(imageNamed: "img/Ocean1_FG.png")
@@ -51,8 +53,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             background.position = CGPoint(x: backgroundTexture1.size().width/2 + backgroundTexture1.size().width * i, y: CGRectGetMidY(self.frame))
             background.size.height = self.frame.height
             background.runAction(moveBackgroundForever1)
-            movingObjects.addChild(background)
+            self.addChild(background)
         }
+        
         
         // SCORE LABEL
         
@@ -62,6 +65,29 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         scoreLabel.position = CGPointMake(CGRectGetMidX(self.frame), self.frame.size.height - 70)
         scoreLabel.zPosition = 100
         self.addChild(scoreLabel)
+        
+        
+        
+        // SCOREBOARD SCORE LABEL
+        
+        scoreboardScoreLabel.fontName = "Helvetica"
+        scoreboardScoreLabel.fontSize = 21
+        scoreboardScoreLabel.fontColor = UIColor.blackColor()
+        scoreboardScoreLabel.position = CGPointMake(CGRectGetMidX(self.frame) + 70, CGRectGetMidY(self.frame) + 19)
+        scoreboardScoreLabel.zPosition = 110
+        self.addChild(scoreboardScoreLabel)
+        
+        
+        
+        // SCOREBOARD BEST SCORE LABEL
+        
+        scoreboardBestScoreLabel.fontName = "Helvetica"
+        scoreboardBestScoreLabel.fontSize = 21
+        scoreboardBestScoreLabel.fontColor = UIColor.blackColor()
+        scoreboardBestScoreLabel.position = CGPointMake(CGRectGetMidX(self.frame) + 70, CGRectGetMidY(self.frame) + -23)
+        scoreboardBestScoreLabel.zPosition = 110
+        self.addChild(scoreboardBestScoreLabel)
+        
         
         
         // BIRD
@@ -123,7 +149,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         pipe1.physicsBody?.dynamic = false
         pipe1.position = CGPoint(x: CGRectGetMidX(self.frame) + self.frame.size.width, y: CGRectGetMidY(self.frame) + pipe1.size.height/2 + gapHeight/2 + pipeOffSet)
         pipe1.physicsBody?.categoryBitMask = worldGroup
-        movingObjects.addChild(pipe1)
+        self.addChild(pipe1)
         
         
         
@@ -137,7 +163,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         pipe2.physicsBody?.dynamic = false
         pipe2.position = CGPoint(x: CGRectGetMidX(self.frame) + self.frame.size.width, y: CGRectGetMidY(self.frame) - pipe2.size.height/2 - gapHeight/2 + pipeOffSet)
         pipe2.physicsBody?.categoryBitMask = worldGroup
-        movingObjects.addChild(pipe2)
+        self.addChild(pipe2)
         
         
         
@@ -151,7 +177,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         gap.physicsBody?.categoryBitMask = gapGroup
         gap.physicsBody?.contactTestBitMask = birdGroup
         gap.physicsBody?.collisionBitMask = 0;
-        movingObjects.addChild(gap)
+        self.addChild(gap)
 
     }
 
@@ -165,13 +191,30 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
         } else
         {
-            movingObjects.speed = 0
-            var scene = GameOverScene(size: self.size)
-            let skView = self.view as SKView?
-            skView?.ignoresSiblingOrder = true
-            scene.scaleMode = .AspectFill
-            scene.size = skView!.bounds.size
-            skView?.presentScene(scene)
+            self.speed = 0
+            var gameOverTexture = SKTexture(imageNamed: "img/scoreboard.png")
+            gameOver = SKSpriteNode(texture: gameOverTexture)
+            gameOver.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame))
+            gameOver.zPosition = 100
+            self.addChild(gameOver)
+            scoreLabel.text = ""
+            scoreboardScoreLabel.text = "\(score)"
+            bird.removeFromParent()
+            
+            let highscore = NSUserDefaults.standardUserDefaults().integerForKey("bestScore")
+            
+            if score > highscore
+            {
+                bestScore = score
+                scoreboardBestScoreLabel.text = "\(bestScore)"
+                NSUserDefaults.standardUserDefaults().setInteger(bestScore, forKey: "bestScore")
+            }
+            else
+            {
+                bestScore = highscore
+                scoreboardBestScoreLabel.text = "\(bestScore)"
+            }
+            
         }
     }
     
