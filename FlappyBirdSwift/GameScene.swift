@@ -14,6 +14,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var scoreLabel = SKLabelNode()
     var bird = SKSpriteNode()
     var background = SKSpriteNode()
+    var background1 = SKSpriteNode()
     var movingObjects = SKNode()
     let birdGroup:UInt32 = 1 << 0
     let worldGroup:UInt32 = 1 << 1
@@ -23,19 +24,32 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         self.physicsWorld.contactDelegate = self
         self.addChild(movingObjects)
+        self.playSound("music/music.mp3", shouldRepeat: true)
         
         // BACKGROUND
         
         
-        var backgroundTexture = SKTexture(imageNamed: "img/bg.png")
+        var backgroundTexture = SKTexture(imageNamed: "img/Ocean2.png")
         var moveBackground = SKAction.moveByX(-backgroundTexture.size().width, y: 0, duration: 9)
         var replaceBackground = SKAction.moveByX(backgroundTexture.size().width, y: 0, duration: 0)
         var moveBackgroundForever = SKAction.repeatActionForever(SKAction.sequence([moveBackground, replaceBackground]))
         for var i:CGFloat = 0; i < 3; i++ {
-            background = SKSpriteNode(texture: backgroundTexture)
-            background.position = CGPoint(x: backgroundTexture.size().width/2 + backgroundTexture.size().width * i, y: CGRectGetMidY(self.frame))
+            background1 = SKSpriteNode(texture: backgroundTexture)
+            background1.position = CGPoint(x: backgroundTexture.size().width/2 + backgroundTexture.size().width * i, y: CGRectGetMidY(self.frame))
+            background1.size.height = self.frame.height
+            background1.runAction(moveBackgroundForever)
+            movingObjects.addChild(background1)
+        }
+        
+        var backgroundTexture1 = SKTexture(imageNamed: "img/Ocean1_FG.png")
+        var moveBackground1 = SKAction.moveByX(-backgroundTexture1.size().width, y: 0, duration: 15)
+        var replaceBackground1 = SKAction.moveByX(backgroundTexture1.size().width, y: 0, duration: 0)
+        var moveBackgroundForever1 = SKAction.repeatActionForever(SKAction.sequence([moveBackground1, replaceBackground1]))
+        for var i:CGFloat = 0; i < 3; i++ {
+            background = SKSpriteNode(texture: backgroundTexture1)
+            background.position = CGPoint(x: backgroundTexture1.size().width/2 + backgroundTexture1.size().width * i, y: CGRectGetMidY(self.frame))
             background.size.height = self.frame.height
-            background.runAction(moveBackgroundForever)
+            background.runAction(moveBackgroundForever1)
             movingObjects.addChild(background)
         }
         
@@ -127,12 +141,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         // GAP
         
-        var gap = SKSpriteNode()
+        var gap = SKNode()
         gap.position = CGPoint(x: CGRectGetMidX(self.frame) + self.frame.size.width, y: CGRectGetMidY(self.frame) + pipeOffSet)
         gap.physicsBody = SKPhysicsBody(rectangleOfSize: CGSizeMake(pipe1.size.width, gapHeight))
         gap.runAction(moveAndRemove)
         gap.physicsBody?.dynamic = false
-        
         gap.physicsBody?.categoryBitMask = gapGroup
         gap.physicsBody?.contactTestBitMask = birdGroup
         gap.physicsBody?.collisionBitMask = 0;
@@ -155,11 +168,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let skView = self.view as SKView?
             skView?.ignoresSiblingOrder = true
             scene.scaleMode = .AspectFill
-            // scene.size = skView!.bounds.size
+            scene.size = skView!.bounds.size
             skView?.presentScene(scene)
         }
     }
-
+    
+    func playSound(audio:String, shouldRepeat:Bool)
+    {
+        var sound = SKAction.playSoundFileNamed(audio, waitForCompletion: shouldRepeat)
+        runAction(sound)
+    }
 
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent){
         /* Called when a touch begins */
