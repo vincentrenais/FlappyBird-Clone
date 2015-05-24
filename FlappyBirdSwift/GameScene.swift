@@ -10,49 +10,55 @@ import SpriteKit
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
+    
+    // Score
     var score = 0
     var bestScore = 0
     var scoreLabel = SKLabelNode()
     var scoreboardScoreLabel = SKLabelNode()
     var scoreboardBestScoreLabel = SKLabelNode()
+    
+    // Bird
     var bird = SKSpriteNode()
+    
+    // Start screen
+    var getReady = SKSpriteNode()
+    var tapTap = SKSpriteNode()
+    
+    // background
     var background = SKSpriteNode()
-    var background1 = SKSpriteNode()
+    
+    // Game Over
     var gameOver = SKSpriteNode()
+    
+    // Physics Categories
     let birdGroup:UInt32 = 1 << 0
     let worldGroup:UInt32 = 1 << 1
     let gapGroup:UInt32 = 1 << 2
+    var gameStart: Bool = false
+    
+    
     
     override func didMoveToView(view: SKView) {
         
+    
         self.physicsWorld.contactDelegate = self
         self.playSound("music/music.mp3", shouldRepeat: true)
         
         
         
+        
         // BACKGROUND
         
-        var backgroundTexture = SKTexture(imageNamed: "img/Ocean2.png")
+        var backgroundTexture = SKTexture(imageNamed: "img/bg.png")
         var moveBackground = SKAction.moveByX(-backgroundTexture.size().width, y: 0, duration: 9)
         var replaceBackground = SKAction.moveByX(backgroundTexture.size().width, y: 0, duration: 0)
         var moveBackgroundForever = SKAction.repeatActionForever(SKAction.sequence([moveBackground, replaceBackground]))
         for var i:CGFloat = 0; i < 3; i++ {
-            background1 = SKSpriteNode(texture: backgroundTexture)
-            background1.position = CGPoint(x: backgroundTexture.size().width/2 + backgroundTexture.size().width * i, y: CGRectGetMidY(self.frame))
-            background1.size.height = self.frame.height
-            background1.runAction(moveBackgroundForever)
-            self.addChild(background1)
-        }
-        
-        var backgroundTexture1 = SKTexture(imageNamed: "img/Ocean1_FG.png")
-        var moveBackground1 = SKAction.moveByX(-backgroundTexture1.size().width, y: 0, duration: 15)
-        var replaceBackground1 = SKAction.moveByX(backgroundTexture1.size().width, y: 0, duration: 0)
-        var moveBackgroundForever1 = SKAction.repeatActionForever(SKAction.sequence([moveBackground1, replaceBackground1]))
-        for var i:CGFloat = 0; i < 3; i++ {
-            background = SKSpriteNode(texture: backgroundTexture1)
-            background.position = CGPoint(x: backgroundTexture1.size().width/2 + backgroundTexture1.size().width * i, y: CGRectGetMidY(self.frame))
+            background = SKSpriteNode(texture: backgroundTexture)
+            background.position = CGPoint(x: backgroundTexture.size().width/2 + backgroundTexture.size().width * i, y: CGRectGetMidY(self.frame))
             background.size.height = self.frame.height
-            background.runAction(moveBackgroundForever1)
+            background.runAction(moveBackgroundForever)
             self.addChild(background)
         }
         
@@ -75,8 +81,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         scoreboardScoreLabel.fontColor = UIColor.blackColor()
         scoreboardScoreLabel.position = CGPointMake(CGRectGetMidX(self.frame) + 70, CGRectGetMidY(self.frame) + 19)
         scoreboardScoreLabel.zPosition = 110
-        self.addChild(scoreboardScoreLabel)
-        
         
         
         // SCOREBOARD BEST SCORE LABEL
@@ -86,7 +90,32 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         scoreboardBestScoreLabel.fontColor = UIColor.blackColor()
         scoreboardBestScoreLabel.position = CGPointMake(CGRectGetMidX(self.frame) + 70, CGRectGetMidY(self.frame) + -23)
         scoreboardBestScoreLabel.zPosition = 110
-        self.addChild(scoreboardBestScoreLabel)
+        
+        
+        
+        // GET READY
+        
+        var getReadyTexture = SKTexture(imageNamed: "img/get-ready.png")
+        getReady = SKSpriteNode(texture: getReadyTexture)
+        getReady.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame) + 200)
+        self.addChild(getReady)
+        
+        
+        
+        // TAP TAP
+        
+        var tapTapTexture = SKTexture(imageNamed: "img/instructions.png")
+        tapTap = SKSpriteNode(texture: tapTapTexture)
+        tapTap.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame) - 200)
+        self.addChild(tapTap)
+        
+        
+        // RESTART
+        
+        var restartButtonTexture = SKTexture(imageNamed: "img/start-button.png")
+        restartButton = SKSpriteNode(texture: restartButtonTexture)
+        restartButton.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame) - 200)
+        restartButton.name = "restartButton"
         
         
         
@@ -101,7 +130,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         bird.runAction(makeBirdFlap)
         bird.setScale(0.6)
         bird.physicsBody = SKPhysicsBody(circleOfRadius: bird.size.height/2)
-        bird.physicsBody?.dynamic = true
+        bird.physicsBody?.dynamic = false
         bird.physicsBody?.allowsRotation = false
         bird.physicsBody?.categoryBitMask = birdGroup
         bird.physicsBody?.collisionBitMask = worldGroup
@@ -119,8 +148,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         ground.physicsBody?.categoryBitMask = worldGroup
         self.addChild(ground)
         
-        
-        var timer = NSTimer.scheduledTimerWithTimeInterval(3, target: self, selector: Selector("makePipes"), userInfo: nil, repeats: true)
     }
     
     // FUNCTION TO MAKE PIPES
@@ -128,14 +155,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func makePipes() {
         
         
-        let gapHeight = bird.size.height * 8 // Gap between the pipes
+        let gapHeight = bird.size.height * 4 // Gap between the pipes
         
         var movementAmount = arc4random() % UInt32(self.frame.size.height/1.5) // Create a movement var to get a random value
         var pipeOffSet = CGFloat(movementAmount) - self.frame.size.height / 4 // Use that movement to create a an offset value
         var movePipes = SKAction.moveByX(-self.frame.size.width * 2, y: 0, duration: NSTimeInterval(self.frame.size.width / 50))
         var removePipes = SKAction.removeFromParent()
-//        var moveAndRemove = SKAction.sequence([movePipes, removePipes])
-        var moveAndRemove = SKAction.repeatActionForever(SKAction.sequence([movePipes, removePipes]))
+        var moveAndRemove = SKAction.sequence([movePipes, removePipes])
+//        var moveAndRemove = SKAction.repeatActionForever(SKAction.sequence([movePipes, removePipes]))
         
         
         
@@ -181,6 +208,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     }
 
+    
+    
 
     func didBeginContact(contact: SKPhysicsContact)
     {
@@ -197,9 +226,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             gameOver.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame))
             gameOver.zPosition = 100
             self.addChild(gameOver)
+            self.addChild(restartButton)
             scoreLabel.text = ""
             scoreboardScoreLabel.text = "\(score)"
             bird.removeFromParent()
+            
+            var timer = NSTimer.scheduledTimerWithTimeInterval(4.0, target: self, selector: Selector("restartGame"), userInfo: nil, repeats: false)
             
             let highscore = NSUserDefaults.standardUserDefaults().integerForKey("bestScore")
             
@@ -214,22 +246,44 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 bestScore = highscore
                 scoreboardBestScoreLabel.text = "\(bestScore)"
             }
+            self.addChild(scoreboardScoreLabel)
+            self.addChild(scoreboardBestScoreLabel)
             
         }
     }
+    
     
     func playSound(audio:String, shouldRepeat:Bool)
     {
         var sound = SKAction.playSoundFileNamed(audio, waitForCompletion: shouldRepeat)
         runAction(sound)
     }
-
-    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent){
+    
+    
+    func restartGame()
+    {
+        background.removeAllChildren()
+        background.removeFromParent()
+    }
+    
+    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent)
+    {
         /* Called when a touch begins */
     
-        bird.physicsBody?.velocity = CGVectorMake(0, 0)
-        bird.physicsBody?.applyImpulse(CGVectorMake(0, 20))
-        
+        for touch in (touches as! Set<UITouch>)
+        {
+            if (!gameStart)
+            {
+                var timer = NSTimer.scheduledTimerWithTimeInterval(3, target: self, selector: Selector("makePipes"), userInfo: nil, repeats: true)
+                gameStart = true
+                getReady.removeFromParent()
+                tapTap.removeFromParent()
+                bird.alpha = 1
+                bird.physicsBody?.dynamic = true
+            }
+            bird.physicsBody?.velocity = CGVectorMake(0, 0)
+            bird.physicsBody?.applyImpulse(CGVectorMake(0, 20))
+        }
     }
     
     override func update(currentTime: CFTimeInterval) {

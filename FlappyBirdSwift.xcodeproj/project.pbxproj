@@ -16,9 +16,7 @@
 		B726E0A31B0D884C00E596C6 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = B726E0A11B0D884C00E596C6 /* LaunchScreen.xib */; };
 		B726E0AF1B0D884C00E596C6 /* FlappyBirdSwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B726E0AE1B0D884C00E596C6 /* FlappyBirdSwiftTests.swift */; };
 		B726E0BB1B0D88F900E596C6 /* img in Resources */ = {isa = PBXBuildFile; fileRef = B726E0BA1B0D88F900E596C6 /* img */; };
-		B726E0BF1B0E843A00E596C6 /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = B726E0BE1B0E843A00E596C6 /* GameOverScene.swift */; };
 		B726E0C11B0E8E9100E596C6 /* music in Resources */ = {isa = PBXBuildFile; fileRef = B726E0C01B0E8E9100E596C6 /* music */; };
-		B726E0C31B0F724500E596C6 /* Background.swift in Sources */ = {isa = PBXBuildFile; fileRef = B726E0C21B0F724500E596C6 /* Background.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,9 +43,7 @@
 		B726E0AD1B0D884C00E596C6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B726E0AE1B0D884C00E596C6 /* FlappyBirdSwiftTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlappyBirdSwiftTests.swift; sourceTree = "<group>"; };
 		B726E0BA1B0D88F900E596C6 /* img */ = {isa = PBXFileReference; lastKnownFileType = folder; path = img; sourceTree = "<group>"; };
-		B726E0BE1B0E843A00E596C6 /* GameOverScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
 		B726E0C01B0E8E9100E596C6 /* music */ = {isa = PBXFileReference; lastKnownFileType = folder; path = music; sourceTree = "<group>"; };
-		B726E0C21B0F724500E596C6 /* Background.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Background.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,8 +90,6 @@
 				B726E0941B0D884C00E596C6 /* AppDelegate.swift */,
 				B726E0961B0D884C00E596C6 /* GameScene.sks */,
 				B726E0981B0D884C00E596C6 /* GameScene.swift */,
-				B726E0C21B0F724500E596C6 /* Background.swift */,
-				B726E0BE1B0E843A00E596C6 /* GameOverScene.swift */,
 				B726E09A1B0D884C00E596C6 /* GameViewController.swift */,
 				B726E09C1B0D884C00E596C6 /* Main.storyboard */,
 				B726E09F1B0D884C00E596C6 /* Images.xcassets */,
@@ -236,8 +230,6 @@
 				B726E0991B0D884C00E596C6 /* GameScene.swift in Sources */,
 				B726E09B1B0D884C00E596C6 /* GameViewController.swift in Sources */,
 				B726E0951B0D884C00E596C6 /* AppDelegate.swift in Sources */,
-				B726E0BF1B0E843A00E596C6 /* GameOverScene.swift in Sources */,
-				B726E0C31B0F724500E596C6 /* Background.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
